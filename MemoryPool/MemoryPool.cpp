@@ -1,44 +1,31 @@
-#include <malloc.h>
+#include "CMemoryPool.h"
+#define MEMORYPOOLAPI extern "C" __declspec(dllexport)
 #include "MemoryPool.h"
-#define ALLOCED -1
 
-MemoryPool::MemoryPool(size_t objectSize, size_t maxBufferSize)
+MEMORYPOOLAPI MEMORYPOOL CreateMemoryPool(DWORD objectSize, DWORD maxBufferSize)
 {
-	objectSize_ = objectSize;
-	size_t num = maxBufferSize / objectSize;
-	pool_ = malloc(maxBufferSize);
-	if (pool_ == nullptr)	__debugbreak();
-	indexTable = (int*)malloc(sizeof(int) * num);
-	top = -1;
-	for (size_t i = 0; i < num; ++i)
-	{
-#pragma warning (disable : 6011)
-		indexTable[i] = i;
-#pragma warning (default : 6011)
-	}
+    return new CMemoryPool(objectSize, maxBufferSize);
 }
 
-void* MemoryPool::Alloc()
+MEMORYPOOLAPI PVOID AllocMemoryFromPool(MEMORYPOOL MP)
 {
-	void* retAddr;
-	int index;
-	++top;
-	index = indexTable[top];
-	retAddr = (char*)pool_ + objectSize_ * index;
-	indexTable[top] = ALLOCED;
-	return retAddr;
+    return ((CMemoryPool*)(MP))->Alloc();
 }
 
-void MemoryPool::Free(void* freeAddr)
+MEMORYPOOLAPI VOID RetMemoryToPool(MEMORYPOOL MP, PVOID freeAddr)
 {
-	int indexToPush;
-	indexToPush = ((char*)freeAddr - (char*)pool_) / objectSize_;
-	indexTable[top] = indexToPush;
-	--top;
+    return ((CMemoryPool*)(MP))->Free(freeAddr);
 }
 
-MemoryPool::~MemoryPool()
+MEMORYPOOLAPI VOID ReleaseMemoryPool(MEMORYPOOL MP)
 {
-	free(pool_);
-	free(indexTable);
+    delete ((CMemoryPool*)MP);
 }
+
+
+
+
+
+
+
+
