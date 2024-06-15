@@ -7,7 +7,7 @@
 #include <Windows.h>
 using MEMORYPOOL = PVOID;
 
-MEMORYPOOLAPI MEMORYPOOL CreateMemoryPool(DWORD objectSize, DWORD maxBufferSize);
+MEMORYPOOLAPI MEMORYPOOL CreateMemoryPool(int objectSize, int objectNum);
 MEMORYPOOLAPI PVOID AllocMemoryFromPool(MEMORYPOOL MP);
 MEMORYPOOLAPI VOID RetMemoryToPool(MEMORYPOOL MP, PVOID freeAddr);
 MEMORYPOOLAPI VOID ReleaseMemoryPool(MEMORYPOOL MP);

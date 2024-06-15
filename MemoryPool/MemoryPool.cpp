@@ -2,9 +2,9 @@
 #define MEMORYPOOLAPI extern "C" __declspec(dllexport)
 #include "MemoryPool.h"
 
-MEMORYPOOLAPI MEMORYPOOL CreateMemoryPool(DWORD objectSize, DWORD maxBufferSize)
+MEMORYPOOLAPI MEMORYPOOL CreateMemoryPool(int objectSize, int objectNum)
 {
-    return new CMemoryPool(objectSize, maxBufferSize);
+    return new CMemoryPool(objectSize, objectNum);
 }
 
 MEMORYPOOLAPI PVOID AllocMemoryFromPool(MEMORYPOOL MP)
@@ -14,7 +14,7 @@ MEMORYPOOLAPI PVOID AllocMemoryFromPool(MEMORYPOOL MP)
 
 MEMORYPOOLAPI VOID RetMemoryToPool(MEMORYPOOL MP, PVOID freeAddr)
 {
-    return ((CMemoryPool*)(MP))->Free(freeAddr);
+    return ((CMemoryPool*)(MP))->Free((char*)freeAddr);
 }
 
 MEMORYPOOLAPI VOID ReleaseMemoryPool(MEMORYPOOL MP)
