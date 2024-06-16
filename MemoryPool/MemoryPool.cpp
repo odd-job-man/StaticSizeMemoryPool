@@ -17,6 +17,11 @@ MEMORYPOOLAPI VOID RetMemoryToPool(MEMORYPOOL MP, PVOID freeAddr)
     return ((CMemoryPool*)(MP))->Free((char*)freeAddr);
 }
 
+MEMORYPOOLAPI int ReportLeak(MEMORYPOOL MP)
+{
+    return ((CMemoryPool*)(MP))->ReportLeak();
+}
+
 MEMORYPOOLAPI VOID ReleaseMemoryPool(MEMORYPOOL MP)
 {
     delete ((CMemoryPool*)MP);

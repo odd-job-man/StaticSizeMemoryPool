@@ -44,6 +44,20 @@ public:
 		}
 		pPool->Free(freeAddr);
 	}
+
+	__forceinline int ReportLeak()
+	{
+		int sum = 0;
+		CMElement* pPool = pPool_;
+		for (int i = 0; i < poolNum_; ++i)
+		{
+			sum += pPool->ReportLeak();
+			pPool = pPool->pNext_;
+		}
+
+		return sum;
+	}
+
 	__forceinline ~CMemoryPool()
 	{
 		CMElement* pPool = pPool_;
@@ -55,7 +69,6 @@ public:
 			delete pPoolTemp;
 		}
 	}
-
 	int objectSize_;
 	int objectNum_;
 	int poolNum_;
